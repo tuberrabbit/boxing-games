@@ -14,7 +14,7 @@ public class Player {
     }
 
     public void setPh(int ph) {
-        this.ph = Math.max(0, ph);
+        this.ph = ph;
     }
 
     public Integer getAtk() {
@@ -33,7 +33,12 @@ public class Player {
         this.name = name;
     }
 
-    public void attack(Player player) {
+    public String attack(Player player) {
         player.setPh(player.getPh() - atk);
+        return String.format("%s攻击了%s,%s受到了%d点伤害,%s剩余生命：%d\n",
+                name, player.getName(),
+                player.getName(), atk,
+                player.getName(), player.getPh())
+                + (player.getPh() < 0 ? String.format("%s被打败了\n", player.getName()) : "");
     }
 }

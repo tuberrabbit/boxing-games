@@ -48,23 +48,28 @@ public class PlayerTest {
     }
 
     @Test
-    public void player2_should_get_zero_ph_when_the_hurt_is_more_than_his_ph() {
-        player1.setAtk(300);
-        player2.setPh(200);
-
-        player1.attack(player2);
-
-        assertThat(player2.getPh(), is(0));
-
-    }
-
-    @Test
     public void player2_should_be_alive_when_the_hurt_is_less_than_his_ph() {
         player1.setAtk(100);
         player2.setPh(200);
+
         player1.attack(player2);
 
         assertThat(player2.getPh(), is(100));
 
+    }
+
+    @Test
+    public void should_return_attack_result_when_the_player_attack_others() {
+        player1.setName("张三");
+        player1.setAtk(8);
+        player1.setPh(10);
+        player2.setName("李四");
+        player2.setPh(20);
+        player2.setAtk(9);
+
+        assertThat(player1.attack(player2), is("张三攻击了李四,李四受到了8点伤害,李四剩余生命：12\n"));
+        assertThat(player2.attack(player1), is("李四攻击了张三,张三受到了9点伤害,张三剩余生命：1\n"));
+        assertThat(player1.attack(player2), is("张三攻击了李四,李四受到了8点伤害,李四剩余生命：4\n"));
+        assertThat(player2.attack(player1), is("李四攻击了张三,张三受到了9点伤害,张三剩余生命：-8\n张三被打败了\n"));
     }
 }
