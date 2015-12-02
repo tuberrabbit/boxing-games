@@ -1,29 +1,36 @@
 package com.tuber.fight;
 
+import static java.lang.String.format;
+
 public class Game {
 
-    private static Game instance;
+    private Reporter reporter;
 
-    private Game() {
-    }
-
-    public static Game getInstance() {
-        if (instance == null) {
-            instance = new Game();
-        }
-        return instance;
+    public Game(Reporter reporter) {
+        this.reporter = reporter;
     }
 
     public Player fight(Player player1, Player player2) {
         while (true) {
-            player1.attack(player2);
-            if (player2.getPh() < 0) {
+            if (isGameOver(player1, player2)) {
                 return player2;
             }
-            player2.attack(player1);
-            if (player1.getPh() < 0) {
+            if (isGameOver(player2, player1)) {
                 return player1;
             }
         }
+    }
+
+    public Reporter getReporter() {
+        return reporter;
+    }
+
+    private boolean isGameOver(Player attacker, Player victim) {
+        reporter.record(attacker.attack(victim));
+        if (victim.getPh() < 0) {
+            reporter.record(format("%s被打败了", victim.getName()));
+            return true;
+        }
+        return false;
     }
 }
